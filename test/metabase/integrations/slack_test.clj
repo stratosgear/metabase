@@ -13,9 +13,10 @@
   (delay (:channels (json/parse-string @default-channels-response keyword))))
 
 (def ^:private channels-request
-  {:address "https://slack.com/api/channels.list"
-   :query-params {:token "test-token"
-                  :exclude_archived "1"}})
+  {:address      "https://slack.com/api/channels.list"
+   :query-params {:token            "test-token"
+                  :exclude_archived "true"
+                  :exclude_members  "true"}})
 
 (defn- expected-200-response [body]
   (fn [_]
@@ -91,7 +92,7 @@
        (users-list)))))
 
 (def ^:private files-request
-  (assoc-in channels-request [:query-params :exclude_archived] "0"))
+  (assoc-in channels-request [:query-params :exclude_archived] "false"))
 
 ;; Asking for the files channel when slack is not configured throws an exception
 (expect
